@@ -26,7 +26,7 @@
           <alfresco.version>5.0.d</alfresco.version>
           <alfresco.data.location>/absolute/path/to/alf_data_dev</alfresco.data.location> -->
         <alfresco.version>5.0.2</alfresco.version>
-        <camel.version>2.13.2</camel.version>
+        <camel.version>2.14.2</camel.version>
         <!-- This control the root logging level for all apps uncomment and change, defaults to WARN
             <app.log.root.level>WARN</app.log.root.level>
         -->
@@ -64,6 +64,12 @@
             <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-repository</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring</artifactId>
+            <version>${camel.version}</version>
+            <scope>provided</scope>
+         </dependency>           
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-kafka</artifactId>
