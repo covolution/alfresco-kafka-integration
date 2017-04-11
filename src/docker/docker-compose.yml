@@ -1,0 +1,59 @@
+version: '2'
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge
+services:
+  kafka:
+    image: docker-internal.alfresco.com/kafka:10.1.0
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms64M"
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: "localhost:2181"
+    networks:
+      back:
+        aliases:
+         - zk
+         - kafkahost
+  kafkamanager:
+    image: srangwal/kafkamanager
+    ports:
+        - 9000:9000
+    networks:
+      - back
+    depends_on:
+          - kafka
+    environment:
+      ZKHOSTS: zk:2181
+  repo:
+    image: alfresco/alf-kafka
+    ports:
+      - "7203:7203"
+      - "8080:8080"
+      - "8443:8443"
+    networks:
+      back:
+      front:
+        aliases:
+         - contentservices
+  share:
+    image: docker-internal.alfresco.com/share:5.2.d
+    ports:
+      - "8081:8080"
+    environment:
+      - "REPO_HOST=contentservices:8080"
+    networks:
+      - front
+    depends_on:
+          - repo
+# Try this: docker run --rm -ti -e KAFKA_HEAP_OPTS='-Xmx64M -Xms64M' -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT="172.17.42.1:2181,172.17.42.1:2182,172.17.42.1:2183" -e KAFKA_ADVERTISED_PORT=9092 -e KAFKA_ADVERTISED_HOST_NAME=172.17.42.1 -p 9092:9092 sockahora_kafka
+# docker exec -it 3f4b516a1c2a bash
+# cd /opt/kafka_2.11-0.10.1.0
+# bin/kafka-topics.sh --create --zookeeper zk:2181 --replication-factor 1 --partitions 1 --topic test
+# bin/kafka-topics.sh --list --zookeeper zk:2181
+# bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic alfresco.audit.events --from-beginning
