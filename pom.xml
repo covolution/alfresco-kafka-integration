@@ -15,7 +15,7 @@
         <version>2.1.1</version>
     </parent>
 
-    <!-- 
+    <!--
         SDK properties have sensible defaults in the SDK parent,
         but you can override the properties below to use another version.
         For more available properties see the alfresco-sdk-parent POM.
@@ -37,7 +37,7 @@
         -->
     </properties>
 
-    <!-- Here we realize the connection with the Alfresco selected platform 
+    <!-- Here we realize the connection with the Alfresco selected platform
         (e.g.version and edition) -->
     <dependencyManagement>
         <dependencies>
@@ -69,7 +69,7 @@
             <artifactId>camel-spring</artifactId>
             <version>${camel.version}</version>
             <scope>provided</scope>
-         </dependency>           
+         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-kafka</artifactId>
@@ -90,7 +90,7 @@
                 <exclusion>
                   <groupId>org.slf4j</groupId>
                   <artifactId>slf4j-api</artifactId>
-                </exclusion>                                                
+                </exclusion>
               </exclusions>
         </dependency>
     </dependencies>
@@ -111,23 +111,5 @@
                 </dependency>
             </dependencies>
         </profile>
-
-        <!--
-            If the 'amp-to-war' profile is enabled then make sure to bring in the alfresco-rad module,
-            which has the H2 scripts and other RAD features.
-
-            TODO: TO INVESTIGATE: This dependency is already defined in the parent SDK pom in the 'amp-to-war' profile
-                  but this does not work, it is not include...
-
-        <profile>
-            <id>amp-to-war</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.alfresco.maven</groupId>
-                    <artifactId>alfresco-rad</artifactId>
-                    <version>${maven.alfresco.version}</version>
-                </dependency>
-            </dependencies>
-        </profile> -->
     </profiles>
 </project>
